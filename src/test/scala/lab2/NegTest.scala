@@ -1,8 +1,8 @@
-package part2
+package lab2
 
 import org.junit.*
 import org.junit.Assert.*
-import Part2.*
+import Lab2.*
 
 class NegTest:
 
