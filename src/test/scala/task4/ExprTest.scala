@@ -53,3 +53,16 @@ class ExprTest:
       Expr.evaluate(expr)
     )
 
+  @Test def testSimpleAddString(): Unit =
+    val sum: Expr = Expr.Add(literalValue, literalValue2)
+    assertEquals(s"(${numericValue} + ${numericValue2})", Expr.show(sum))
+
+  @Test def testComposedAddString(): Unit =
+    val leftSum: Expr = Expr.Add(literalValue, literalValue2)
+    val rightSum: Expr = Expr.Add(literalValue3, literalValue4)
+    val finalSum: Expr = Expr.Add(leftSum, rightSum)
+    assertEquals(
+      s"((${numericValue} + ${numericValue2}) + (${numericValue3} + ${numericValue4}))",
+      Expr.show(finalSum)
+    )
+

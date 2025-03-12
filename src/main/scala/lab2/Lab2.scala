@@ -158,4 +158,8 @@ object Lab2 extends App:
       case Add(l, r) => evaluate(l) + evaluate(r)
       case Multiply(l, r) => evaluate(l) * evaluate(r)
 
+    def show(expr: Expr): String = expr match
+      case Literal(v) => v.toString
+      case Add(l, r) => "(" + show(l) + " + " + show(r) + ")"
+      case Multiply(l, r) => "(" + show(l) + " * " + show(r) + ")"
 
