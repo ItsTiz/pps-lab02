@@ -147,9 +147,15 @@ object Lab2 extends App:
   println(s"reverseNumber: ${reverseNumber(reverseNumber(toBeReversed))}")
 
   //Task 4 - svolto da solo
+  enum Expr:
+    case Literal(value: Int)
+    case Add(left: Expr, right: Expr)
+    case Multiply(left: Expr, right: Expr)
 
-
-
-
+  object Expr:
+    def evaluate(expr: Expr): Int = expr match
+      case Literal(v) => v
+      case Add(l, r) => evaluate(l) + evaluate(r)
+      case Multiply(l, r) => evaluate(l) * evaluate(r)
 
 
