@@ -5,6 +5,11 @@ object Lab2 extends App:
   //Task 1 - svolto da solo
   println("Hello, Scala!")
 
+  val value = 5.8
+  val value2 = 6.3
+  val pendingMult = curriedMult(value2)
+  val pendingDiv = divideCurried(value)
+
   val genericOperation: (Double, Double, (Double, Double) => Double) => Double =
     (a, b, f) => f(a, b)
 
@@ -15,11 +20,6 @@ object Lab2 extends App:
   def divide(x: Double, y: Double): Double = x / y
 
   def divideCurried(x: Double)(y: Double): Double = x / y
-
-  val value = 5.8
-  val value2 = 6.3
-  val pendingMult = curriedMult(value2)
-  val pendingDiv = divideCurried(value)
 
   println(s"mult: ${mult(value, value2)}")
   println(s"curriedMult - pending call: $pendingMult")
@@ -36,6 +36,9 @@ object Lab2 extends App:
   println(s"divideCurried: ${pendingDiv(value2)}")
 
   // Task 2 - svolto da solo
+  val negativeInt = -7
+  val positiveInt = 14
+
   val signFunction: Int => String =
     case n if n >= 0 => "positive"
     case _ => "negative"
@@ -44,9 +47,6 @@ object Lab2 extends App:
     case n if n >= 0 => "positive"
     case _ => "negative"
 
-  val negativeInt = -7
-  val positiveInt = 14
-
   println(s"signFunction: ${signFunction(negativeInt)}")
   println(s"signFunction: ${signFunction(0)}")
   println(s"signFunction: ${signFunction(positiveInt)}")
@@ -54,16 +54,17 @@ object Lab2 extends App:
   println(s"signMethod: ${signMethod(positiveInt)}")
   println(s"signMethod: ${signMethod(0)}")
 
+  val empty: String => Boolean = _ == ""
+  val testString = "foo"
+
   val negS: (String => Boolean) => String => Boolean =
     p => s => !p(s)
 
   def negM(p: String => Boolean): String => Boolean =
     s => !p(s)
 
-  val empty: String => Boolean = _ == ""
   val notEmpty = negS(empty)
   val notEmptyM = negM(empty)
-  val testString = "foo"
 
   println(s"negS: ${notEmpty(testString)}")
   println(s"negS: ${notEmpty("")}")
@@ -72,13 +73,14 @@ object Lab2 extends App:
   println(s"negM: ${notEmptyM("")}")
   println(s"negM: ${notEmptyM(testString) && !notEmptyM("")}")
 
-  def neg[X](p: X => Boolean): X => Boolean =
-    x => !p(x)
-
   val evenInt = 2
   val positiveDouble = 42.42
   val even: Int => Boolean = _ % 2 == 0
   val positive: Double => Boolean = _ > 0
+
+  def neg[X](p: X => Boolean): X => Boolean =
+    x => !p(x)
+
   val notEven = neg(even)
   val notPositive = neg(positive)
 
@@ -86,6 +88,11 @@ object Lab2 extends App:
   println(s"neg[X]: ${notEven(evenInt + 1)}")
   println(s"neg[X]: ${notPositive(positiveDouble)}")
   println(s"neg[X]: ${notPositive(-positiveDouble)}")
+
+  val x = 4
+  val y = 5
+  val z = y
+  val invalidZ = z + 1
 
   val threeValPredicateFun: (Int, Int, Int) => Boolean =
     (x, y, z) => x <= y && y == z
@@ -99,11 +106,6 @@ object Lab2 extends App:
   def threeValPredicateMethodCurried(x: Int)(y: Int)(z: Int): Boolean =
     x <= y && y == z
 
-  val x = 4
-  val y = 5
-  val z = y
-  val invalidZ = z + 1
-
   println(s"threeValPredicateFun: ${threeValPredicateFun(x, y, z)}")
   println(s"threeValPredicateFun: ${threeValPredicateFun(x, y, invalidZ)}")
   println(s"threeValPredicateFunCurried: ${threeValPredicateFunCurried(x)(y)(z)}")
@@ -113,30 +115,30 @@ object Lab2 extends App:
   println(s"threeValPredicateMethodCurried ${threeValPredicateMethodCurried(x)(y)(z)}")
   println(s"threeValPredicateMethodCurried: ${threeValPredicateMethodCurried(x)(y)(invalidZ)}")
 
-  def compose(f: Int => Int, g: Int => Int): Int => Int =
-    i => f(g(i))
-
   val twice: Int => Int = _ * 2
   val precedent: Int => Int = _ - 1
+
+  def compose(f: Int => Int, g: Int => Int): Int => Int =
+    i => f(g(i))
 
   println(s"compose: ${compose(precedent, twice)(x)}")
   println(s"compose: ${compose(precedent, twice)(y)}")
   println(s"compose: ${compose(precedent, twice)(z + 1)}")
 
-  def composeGeneric[A, B, C](f: B => C, g: A => B): A => C =
-    i => f(g(i))
-
   val half: Int => Double = _ / 2
   val odd: Double => Boolean = _ % 2 == 1
+
+  def composeGeneric[A, B, C](f: B => C, g: A => B): A => C =
+    i => f(g(i))
 
   println(s"composeGeneric: ${composeGeneric(precedent, twice)(x - 2)}")
   println(s"composeGeneric: ${composeGeneric(odd, half)(x + 2)}")
 
-  def composeThree[A, B, C, D](f: C => D, g: B => C, h: A => B): A => D =
-    i => f(g(h(i)))
-
   val stringify: Int => String = _.toString
   val addExclamationMark: String => String = _ + "!"
+
+  def composeThree[A, B, C, D](f: C => D, g: B => C, h: A => B): A => D =
+    i => f(g(h(i)))
 
   println(s"composeThree: ${composeThree(half, precedent, twice)(x)}")
   println(s"composeThree: ${composeThree(addExclamationMark, stringify, twice)(3)}")
@@ -165,15 +167,15 @@ object Lab2 extends App:
   println(s"power: ${power(x - 1, y - 1)}")
   println(s"power: ${power(y + 1, z - 2)}")
 
+  val toBeReversedSingle = 7
+  val toBeReversed = 12345
+
   def reverseNumber(n: Int): Int =
     @annotation.tailrec
     def _reverse(rem: Int, curr: Int): Int = rem match
       case rem if (rem % 10) == rem => curr * 10 + rem
       case _ => _reverse(rem / 10, curr * 10 + rem % 10)
     _reverse(n, 0)
-
-  val toBeReversedSingle = 7
-  val toBeReversed = 12345
 
   println(s"reverseNumber: ${reverseNumber(toBeReversedSingle)}")
   println(s"reverseNumber: ${reverseNumber(toBeReversed)}")
