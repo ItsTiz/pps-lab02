@@ -2,8 +2,41 @@ package lab2
 
 object Lab2 extends App:
 
+  //Task 1 - svolto da solo
+  println("Hello, Scala!")
+
+  val genericOperation: (Double, Double, (Double, Double) => Double) => Double =
+    (a, b, f) => f(a, b)
+
+  def mult(x: Double, y: Double): Double = x * y
+
+  def curriedMult(x: Double)(y: Double): Double = x * y
+
+  def divide(x: Double, y: Double): Double = x / y
+
+  def divideCurried(x: Double)(y: Double): Double = x / y
+
+  val value = 5.8
+  val value2 = 6.3
+  val pendingMult = curriedMult(value2)
+  val pendingDiv = divideCurried(value)
+
+  println(s"mult: ${mult(value, value2)}")
+  println(s"curriedMult - pending call: $pendingMult")
+  println(s"curriedMult: ${pendingMult(value2)}")
+  println(s"curriedMult: ${curriedMult(value)(value2)}")
+  println(s"genericOperation: ${genericOperation(value, value2, _ * _)}")
+  println(s"genericOperation: ${genericOperation(value, value2, _ + _)}")
+  println(s"genericOperation: ${genericOperation(value, value2, _ - _)}")
+  println(s"divide: ${divide(value, value2)}")
+  println(s"divide: ${divide(value, 0)}")
+  println(s"divide: ${divide(value, 1)}")
+  println(s"divideCurried: ${divideCurried(value)(value2)}")
+  println(s"divideCurried - pending call: $pendingDiv")
+  println(s"divideCurried: ${pendingDiv(value2)}")
+
   // Task 2 - svolto da solo
-  val signFunction: Int => String = _ match
+  val signFunction: Int => String =
     case n if n >= 0 => "positive"
     case _ => "negative"
 
@@ -24,8 +57,8 @@ object Lab2 extends App:
   val negS: (String => Boolean) => String => Boolean =
     p => s => !p(s)
 
-  def negM(predicate: String => Boolean): String => Boolean =
-    s => !predicate(s)
+  def negM(p: String => Boolean): String => Boolean =
+    s => !p(s)
 
   val empty: String => Boolean = _ == ""
   val notEmpty = negS(empty)
@@ -39,18 +72,18 @@ object Lab2 extends App:
   println(s"negM: ${notEmptyM("")}")
   println(s"negM: ${notEmptyM(testString) && !notEmptyM("")}")
 
-  def neg[X](predicate: X => Boolean): X => Boolean =
-    x => !predicate(x)
+  def neg[X](p: X => Boolean): X => Boolean =
+    x => !p(x)
 
-  val even: Int => Boolean = _ % 2 == 0
-  val positive: Double => Boolean = _ > 0
   val evenInt = 2
   val positiveDouble = 42.42
+  val even: Int => Boolean = _ % 2 == 0
+  val positive: Double => Boolean = _ > 0
   val notEven = neg(even)
   val notPositive = neg(positive)
 
   println(s"neg[X]: ${notEven(evenInt)}")
-  println(s"neg[X]: ${notEven(evenInt+1)}")
+  println(s"neg[X]: ${notEven(evenInt + 1)}")
   println(s"neg[X]: ${notPositive(positiveDouble)}")
   println(s"neg[X]: ${notPositive(-positiveDouble)}")
 
@@ -71,35 +104,35 @@ object Lab2 extends App:
   val z = y
   val invalidZ = z + 1
 
-  println(s"threeValPredicateFun: ${threeValPredicateFun(x,y,z)}")
-  println(s"threeValPredicateFun: ${threeValPredicateFun(x,y,invalidZ)}")
+  println(s"threeValPredicateFun: ${threeValPredicateFun(x, y, z)}")
+  println(s"threeValPredicateFun: ${threeValPredicateFun(x, y, invalidZ)}")
   println(s"threeValPredicateFunCurried: ${threeValPredicateFunCurried(x)(y)(z)}")
   println(s"threeValPredicateFunCurried: ${threeValPredicateFunCurried(x)(y)(invalidZ)}")
-  println(s"threeValPredicateMethod: ${threeValPredicateMethod(x,y,z)}")
-  println(s"threeValPredicateMethod: ${threeValPredicateMethod(x,y,invalidZ)}")
+  println(s"threeValPredicateMethod: ${threeValPredicateMethod(x, y, z)}")
+  println(s"threeValPredicateMethod: ${threeValPredicateMethod(x, y, invalidZ)}")
   println(s"threeValPredicateMethodCurried ${threeValPredicateMethodCurried(x)(y)(z)}")
   println(s"threeValPredicateMethodCurried: ${threeValPredicateMethodCurried(x)(y)(invalidZ)}")
 
   def compose(f: Int => Int, g: Int => Int): Int => Int =
     i => f(g(i))
 
-  val twice: Int => Int = _ * 2;
-  val precedent: Int => Int = _ - 1;
+  val twice: Int => Int = _ * 2
+  val precedent: Int => Int = _ - 1
 
   println(s"compose: ${compose(precedent, twice)(x)}")
   println(s"compose: ${compose(precedent, twice)(y)}")
-  println(s"compose: ${compose(precedent, twice)(z+1)}")
+  println(s"compose: ${compose(precedent, twice)(z + 1)}")
 
-  def composeGeneric[A,B,C](f: B => C, g: A => B): A => C =
+  def composeGeneric[A, B, C](f: B => C, g: A => B): A => C =
     i => f(g(i))
 
-  val half: Int => Double = _ / 2;
-  val odd: Double => Boolean = _ % 2 == 1;
+  val half: Int => Double = _ / 2
+  val odd: Double => Boolean = _ % 2 == 1
 
-  println(s"composeGeneric: ${composeGeneric(precedent, twice)(x-2)}")
-  println(s"composeGeneric: ${composeGeneric(odd, half)(x+2)}")
+  println(s"composeGeneric: ${composeGeneric(precedent, twice)(x - 2)}")
+  println(s"composeGeneric: ${composeGeneric(odd, half)(x + 2)}")
 
-  def composeThree[A,B,C,D](f: C => D, g: B => C, h: A => B): A => D =
+  def composeThree[A, B, C, D](f: C => D, g: B => C, h: A => B): A => D =
     i => f(g(h(i)))
 
   val stringify: Int => String = _.toString
@@ -117,7 +150,7 @@ object Lab2 extends App:
   // Task 3 - svolto da solo
   def power(base: Double, exponent: Int): Double = exponent match
     case 0 => 1
-    case _ => base * power(base, exponent-1)
+    case _ => base * power(base, exponent - 1)
 
   println(s"power: ${power(x, y)}")
   println(s"power: ${power(y, z)}")
@@ -129,14 +162,14 @@ object Lab2 extends App:
       case _ => _power(base, exponent - 1, base * acc)
     _power(base, exponent, 1)
 
-  println(s"power: ${power(x-1, y-1)}")
-  println(s"power: ${power(y+1, z-2)}")
+  println(s"power: ${power(x - 1, y - 1)}")
+  println(s"power: ${power(y + 1, z - 2)}")
 
   def reverseNumber(n: Int): Int =
     @annotation.tailrec
-    def _reverse(remainder: Int, currentReverse: Int): Int = remainder match
-      case remainder if (remainder % 10) == remainder => currentReverse * 10 + remainder
-      case _ => _reverse(remainder / 10, currentReverse * 10 + remainder % 10)
+    def _reverse(rem: Int, curr: Int): Int = rem match
+      case rem if (rem % 10) == rem => curr * 10 + rem
+      case _ => _reverse(rem / 10, curr * 10 + rem % 10)
     _reverse(n, 0)
 
   val toBeReversedSingle = 7
@@ -163,3 +196,5 @@ object Lab2 extends App:
       case Add(l, r) => "(" + show(l) + " + " + show(r) + ")"
       case Multiply(l, r) => "(" + show(l) + " * " + show(r) + ")"
 
+  //Task 5 - svolto da solo
+  //vedi test/task5/OptionalTest e main/scala/task5/Optional
