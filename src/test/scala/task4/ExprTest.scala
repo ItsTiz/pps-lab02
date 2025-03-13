@@ -55,38 +55,38 @@ class ExprTest:
 
   @Test def testSimpleAddString(): Unit =
     val sum: Expr = Expr.Add(literalValue, literalValue2)
-    assertEquals(s"(${numericValue} + ${numericValue2})", Expr.show(sum))
+    assertEquals(s"($numericValue + $numericValue2)", Expr.show(sum))
 
   @Test def testComposedAddString(): Unit =
     val leftSum: Expr = Expr.Add(literalValue, literalValue2)
     val rightSum: Expr = Expr.Add(literalValue3, literalValue4)
     val finalSum: Expr = Expr.Add(leftSum, rightSum)
     assertEquals(
-      s"((${numericValue} + ${numericValue2}) + (${numericValue3} + ${numericValue4}))",
+      s"(($numericValue + $numericValue2) + ($numericValue3 + $numericValue4))",
       Expr.show(finalSum)
     )
 
   @Test def testSimpleMultiplyString(): Unit =
     val product: Expr = Expr.Multiply(literalValue, literalValue2)
-    assertEquals(s"(${numericValue} * ${numericValue2})", Expr.show(product))
+    assertEquals(s"($numericValue * $numericValue2)", Expr.show(product))
 
   @Test def testOppositeMultiplicationString(): Unit =
     val product: Expr = Expr.Multiply(literalValue, Expr.Literal(-1))
-    assertEquals(s"(${numericValue} * -1)", Expr.show(product))
+    assertEquals(s"($numericValue * -1)", Expr.show(product))
 
   @Test def testComposedMultiplyString(): Unit =
     val leftProduct: Expr = Expr.Multiply(literalValue, literalValue2)
     val rightProduct: Expr = Expr.Multiply(literalValue3, literalValue4)
     val finalProduct: Expr = Expr.Multiply(leftProduct, rightProduct)
     assertEquals(
-      s"((${numericValue} * ${numericValue2}) * (${numericValue3} * ${numericValue4}))",
+      s"(($numericValue * $numericValue2) * ($numericValue3 * $numericValue4))",
       Expr.show(finalProduct)
     )
 
   @Test def testNestedAdditionAndMultiplicationString(): Unit =
     val expr: Expr = Expr.Multiply(Expr.Add(literalValue, literalValue2), literalValue3)
     assertEquals(
-      s"((${numericValue} + ${numericValue2}) * ${numericValue3})",
+      s"(($numericValue + $numericValue2) * $numericValue3)",
       Expr.show(expr)
     )
 
